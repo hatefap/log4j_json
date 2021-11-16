@@ -1,9 +1,8 @@
 # Crate uses log4j as internal logging abstraction.
 # Configure log4j as you need it to behave by setting the log4j prefixes in
 # this file.
-status = error
 
-rootLogger.level = info
+rootLogger.level = debug
 #rootLogger.appenderRef.console.ref = console
 rootLogger.appenderRef.rolling.ref = rolling
 # Define your appenders here.
@@ -30,14 +29,16 @@ rootLogger.appenderRef.rolling.ref = rolling
 appender.rolling.type = RollingFile
 appender.rolling.name = rolling
 appender.rolling.fileName = logs${sys:file.separator}application.log
-appender.rolling.json.type  = JsonTemplateLayout
-appender.rolling.json.eventTemplateUri = classpath:LogstashJsonEventLayoutV1.json
-appender.rolling.json.locationInfoEnabled=true
+appender.rolling.layout.type  = JsonTemplateLayout
+appender.rolling.layout.eventTemplateUri = classpath:LogstashJsonEventLayoutV1.json
+appender.rolling.layout.locationInfoEnabled=true
 
-appender.rolling.json.eventTemplateAdditionalField[0].type = EventTemplateAdditionalField
-appender.rolling.json.eventTemplateAdditionalField[0].key = marker
-appender.rolling.json.eventTemplateAdditionalField[0].value = {"$resolver": "marker", "field": "name"}
-appender.rolling.json.eventTemplateAdditionalField[0].format = JSON
+##
+appender.rolling.layout.eventTemplateAdditionalField[0].type = EventTemplateAdditionalField
+appender.rolling.layout.eventTemplateAdditionalField[0].key = application_name
+appender.rolling.layout.eventTemplateAdditionalField[0].value = my_app
+# the following could be JSON, if it is so then you have to provide a custom json object for the value
+appender.rolling.layout.eventTemplateAdditionalField[0].format = STRING
 
 appender.rolling.filePattern = logs${sys:file.separator}application-%d{yyyy-MM-dd-HH-mm-ss}-%i.log
 appender.rolling.policies.type = Policies
